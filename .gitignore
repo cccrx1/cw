@@ -6,3 +6,9 @@ npm-debug.log*
 
 # local npm cache (recommended on Windows for EPERM issues)
 .npm-cache/
+
+# 环境变量（含密钥，禁止提交）
+.env
+backend/.env
+frontend/.env
+**/.env.local
