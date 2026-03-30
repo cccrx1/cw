@@ -1,0 +1,37 @@
+from pydantic import BaseModel, Field
+from datetime import datetime
+from typing import Optional
+
+
+class ChatSessionCreate(BaseModel):
+    title: str = Field(..., min_length=1, max_length=100)
+
+
+class ChatSessionUpdate(BaseModel):
+    title: str = Field(..., min_length=1, max_length=100)
+
+
+class ChatSessionResponse(BaseModel):
+    id: int
+    user_id: int
+    title: str
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+
+class ChatMessageCreate(BaseModel):
+    content: str = Field(..., min_length=1)
+
+
+class ChatMessageResponse(BaseModel):
+    id: int
+    session_id: int
+    role: str
+    content: str
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True

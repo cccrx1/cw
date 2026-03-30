@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mysql+mysqlconnector://admin:password@db:3306/example_db
+      - SECRET_KEY=your-secret-key-here
+      - DIFY_API_KEY=your-dify-api-key-here
+      - DIFY_WORKFLOW_ID=your-dify-workflow-id-here
+      - DIFY_CHATFLOW_ID=your-dify-chatflow-id-here
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=example_db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=password
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
